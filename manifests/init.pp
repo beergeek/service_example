@@ -28,6 +28,7 @@
 #
 # [*user_name*]
 #   Name of the user to manage.
+#   If present (even without 'manage_user') the user will be the Service user.
 #   Required if 'manage_user' is true.
 #
 # Actions:
@@ -61,11 +62,19 @@ define service_example (
     user { "${title}_user":
       ensure => $ensure,
       name   => $user_name,
-      before => Registry::Service["${title}_service"],
+      before => Registry::Service["${title}"],
     }
-   }
+  }
+  
+  if $user_name {
+    registry::value { "${title}_reg":
+      key   => "HKLM\System\CurrentControlSet\services\${title}\ObjectName",
+      type  => 'string',
+      value => $user_name,
+    }
+  }
 
-  registry::service { "${title}_service":
+  registry::service { "${title}":
     ensure        => $ensure,
     display_name  => $display_name,
     command       => $command,

@@ -19,7 +19,7 @@ describe 'service_example' do
     }
   
     it {
-      should contain_registry__service('run_windows_stuff_service').with(
+      should contain_registry__service('run_windows_stuff').with(
         'ensure'        => 'present',
         'display_name'  => 'run_windows_stuff',
         'command'       => 'C:\Windows\regedit.exe',
@@ -70,11 +70,19 @@ describe 'service_example' do
   		should contain_user('run_windows_stuff_user').with(
   			'ensure'				=> 'present',
   			'name'					=> 'testUser',
-  		).that_comes_before('Registry::Service[run_windows_stuff_service]')
+  		).that_comes_before('Registry::Service[run_windows_stuff]')
+  	}
+  	
+  	it {
+  		should contain_registry__value('run_windows_stuff_reg').with(
+  			'key'	 	=> "HKLM\System\CurrentControlSet\services\run_windows_stuff\ObjectName"
+  			'type'	=> "string",
+  			'value'	=> 'testUser',
+  		)
   	}
   
     it {
-      should contain_registry__service('run_windows_stuff_service').with(
+      should contain_registry__service('run_windows_stuff').with(
         'ensure'        => 'present',
         'display_name'  => 'run_windows_stuff',
         'command'       => 'C:\Windows\regedit.exe',
