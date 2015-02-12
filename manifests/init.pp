@@ -19,6 +19,10 @@ define service_example (
   $start        = 'automatic',
 ) {
 
+  if ! member(['present','absent'],$ensure) {
+    fail("The value for \$ensure must be 'present' or 'absent'.....not ${ensure}")
+  }
+    
   if ! member(['automatic','manual','disabled'], $start) {
     fail("The value for \$start must be 'automatic','manual', or 'disabled'.....not ${start}")
   }
