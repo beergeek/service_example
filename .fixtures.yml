@@ -1,3 +1,7 @@
 fixtures:
   symlinks:
     service_example: "#{source_dir}"
+  repositories:
+    registry:
+      repo: 'https://github.com/puppetlabs/puppetlabs-registry.git'
+      ref: '1.0.3'
