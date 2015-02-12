@@ -23,6 +23,7 @@ describe 'service_example' do
         'ensure'        => 'present',
         'display_name'  => 'run_windows_stuff',
         'command'       => 'C:\Windows\regedit.exe',
+        'start'					=> 'automatic',
       )
     }
   end
