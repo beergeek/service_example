@@ -27,4 +27,18 @@ describe 'service_example' do
       )
     }
   end
+  
+  context 'fails with incorrect parameters' do
+    let(:params) {
+      {
+        :display_name => 'run_windows_stuff',
+        :command      => 'C:\Windows\regedit.exe',
+        :start				=> 'sleep',
+      }
+    }
+    
+    it {
+    	expect { should compile }.to raise_error
+    }
+  end
 end
