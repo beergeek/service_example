@@ -35,6 +35,7 @@ define service_example (
     user { "${title}_user":
       ensure => $ensure,
       name   => $user_name,
+      before => Registry::User["${title}_service"],
     }
    }
 
