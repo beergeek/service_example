@@ -2,7 +2,33 @@
 #
 # This module manages service_example
 #
-# Parameters: none
+# Parameters:
+#
+# [*command*]
+#   The command to execute for the service.
+#   Required.
+#
+# [*ensure*]
+#   Value to determine if the service and user (if included) are present or absent.
+#   Values: 'present' or 'absent'.
+#   Defaults to 'present'.
+#
+# [*display_name*]
+#   Display name for the service.
+#   Defaults to title of the resource.
+#
+# [*manage_user*]
+#   Value to determine if a user is managed for the service.
+#   Defaults to false.
+#
+# [*start*]
+#   Value to determine if the service is started.
+#   Valid values: 'automatic', 'manual', and 'disabled'.
+#   Defaults to 'automatic'.
+#
+# [*user_name*]
+#   Name of the user to manage.
+#   Required if 'manage_user' is true.
 #
 # Actions:
 #
@@ -15,8 +41,8 @@ define service_example (
   $ensure       = present,
   $display_name = $title,
   $manage_user  = false,
-  $user_name    = undef,
   $start        = 'automatic',
+  $user_name    = undef,
 ) {
 
   if ! member(['present','absent'],$ensure) {
