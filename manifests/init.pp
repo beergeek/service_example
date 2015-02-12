@@ -19,9 +19,9 @@ define service_example (
   $start        = 'automatic',
 ) {
 
-  if ! member(['automatic','manual','disabled'], $start)
+  if ! member(['automatic','manual','disabled'], $start) {
     fail("The value for \$start must be 'automatic','manual', or 'disabled'.....not ${start}")
-  )
+  }
 
   registry::service { "${title}_service":
     ensure        => $ensure,
