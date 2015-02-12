@@ -27,6 +27,17 @@ define service_example (
     fail("The value for \$start must be 'automatic','manual', or 'disabled'.....not ${start}")
   }
 
+  if $manage_user {
+    if ! $user_name {
+      fail('You must provide a $user_name to manage a user')
+    }
+    
+    user { "${title}_user":
+      ensure => $ensure,
+      name   => $user_name,
+    }
+   }
+
   registry::service { "${title}_service":
     ensure        => $ensure,
     display_name  => $display_name,

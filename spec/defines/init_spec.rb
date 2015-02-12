@@ -55,4 +55,31 @@ describe 'service_example' do
     	expect { should compile }.to raise_error
     }
   end
+  
+  context 'with user managed' do
+    let(:params) {
+      {
+        :display_name => 'run_windows_stuff',
+        :command      => 'C:\Windows\regedit.exe',
+        :manage_user	=> true,
+        :user_name		=> 'testUser',
+      }
+    }
+  
+  	it {
+  		should contain_user('run_windows_stuff_user').with(
+  			'ensure'				=> 'present',
+  			'name'					=> 'testUser',
+  		).that_comes_before('Registry::Service[run_windows_stuff_service]')
+  	}
+  
+    it {
+      should contain_registry__service('run_windows_stuff_service').with(
+        'ensure'        => 'present',
+        'display_name'  => 'run_windows_stuff',
+        'command'       => 'C:\Windows\regedit.exe',
+        'start'					=> 'automatic',
+      )
+    }
+  end
 end
