@@ -5,3 +5,6 @@ fixtures:
     registry:
       repo: 'https://github.com/puppetlabs/puppetlabs-registry.git'
       ref: '1.0.3'
+    stdlib:
+      repo: 'https://github.com/puppetlabs/puppetlabs-stdlib.git'
+      ref: '4.5.1'
