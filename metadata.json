@@ -1,0 +1,15 @@
+{
+  "author": "bgray",
+  "dependencies": [
+  	{"name":"puppetlabs-stdlib","version_requirement":">= 1.0.0"},
+  ],
+  "license": "Apache",
+  "name": "bgray-service_example",
+  "operatingsystem_support": [],
+  "project_page": "",
+  "requirements": [],
+  "source": "",
+  "summary": "",
+  "tags": [],
+  "version": "0.1.0"
+}
