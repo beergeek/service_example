@@ -123,6 +123,20 @@ define service_example (
     type    => 'string',
   }
 
+  registry_value { "${title}_reg_type":
+    ensure  => $ensure,
+    path    => "${reg_path}\\Type",
+    data    => 0x00000010,
+    type    => 'dword',
+  }
+
+  registry_value { "${title}_reg_error":
+    ensure  => $ensure,
+    path    => "${reg_path}\\ErrorControl",
+    data    => 0x00000001,
+    type    => 'dword',
+  }
+
   reboot { "${title}_after":
     apply   => 'finished',
     timeout => '10',

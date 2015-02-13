@@ -54,6 +54,26 @@ describe 'service_example' do
       ).that_requires('Registry_key[run_windows_stuff]')
       .that_notifies('Reboot[run_windows_stuff_after]')
     }
+
+    it {
+      should contain_registry_value('run_windows_stuff_reg_type').with(
+        'ensure'  => 'present',
+        'path'    => 'HKLM\System\CurrentControlSet\Services\run_windows_stuff\Type',
+        'data'		=> 0x00000010,
+        'type'		=> 'dword',
+      ).that_requires('Registry_key[run_windows_stuff]')
+      .that_notifies('Reboot[run_windows_stuff_after]')
+    }
+
+    it {
+      should contain_registry_value('run_windows_stuff_reg_error').with(
+        'ensure'  => 'present',
+        'path'    => 'HKLM\System\CurrentControlSet\Services\run_windows_stuff\ErrorControl',
+        'data'		=> 0x00000001,
+        'type'		=> 'dword',
+      ).that_requires('Registry_key[run_windows_stuff]')
+      .that_notifies('Reboot[run_windows_stuff_after]')
+    }
     
     it {
     	should contain_reboot('run_windows_stuff_after').with(
@@ -153,6 +173,26 @@ describe 'service_example' do
         'path'    => 'HKLM\System\CurrentControlSet\Services\run_windows_stuff\ObjectName',
         'data'		=> 'testUser',
         'type'		=> 'string',
+      ).that_requires('Registry_key[run_windows_stuff]')
+      .that_notifies('Reboot[run_windows_stuff_after]')
+    }
+
+    it {
+      should contain_registry_value('run_windows_stuff_reg_type').with(
+        'ensure'  => 'present',
+        'path'    => 'HKLM\System\CurrentControlSet\Services\run_windows_stuff\Type',
+        'data'		=> 0x00000010,
+        'type'		=> 'dword',
+      ).that_requires('Registry_key[run_windows_stuff]')
+      .that_notifies('Reboot[run_windows_stuff_after]')
+    }
+
+    it {
+      should contain_registry_value('run_windows_stuff_reg_error').with(
+        'ensure'  => 'present',
+        'path'    => 'HKLM\System\CurrentControlSet\Services\run_windows_stuff\ErrorControl',
+        'data'		=> 0x00000001,
+        'type'		=> 'dword',
       ).that_requires('Registry_key[run_windows_stuff]')
       .that_notifies('Reboot[run_windows_stuff_after]')
     }
