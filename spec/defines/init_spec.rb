@@ -26,6 +26,21 @@ describe 'service_example' do
         'start'					=> 'automatic',
       ).that_notifies('Reboot[run_windows_stuff_after]')
     }
+
+    it {
+      should contain_registry_key('run_windows_stuff').with(
+        'ensure'  => 'present',
+        'path'    => 'HKLM\System\CurrentControlSet\Services\run_windows_stuff',
+      )
+    }
+
+    it {
+      should contain_registry_value('run_windows_stuff').with(
+        'ensure'  => 'present',
+        'path'    => 'HKLM\System\CurrentControlSet\Services\run_windows_stuff\',
+        '
+      )
+    }
     
     it {
     	should contain_reboot('after').with(

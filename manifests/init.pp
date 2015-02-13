@@ -58,6 +58,25 @@ define service_example (
     fail("The value for \$start must be 'automatic','manual', or 'disabled'.....not ${start}")
   }
 
+  case $start {
+    'automatic': { $start_value = '2' }
+    'manual': { $start_value = '3' }
+    'disabled': { $start_value = '4' }
+    default: { $start_value = '2' }
+  }
+
+  $reg_path = "HKLM\\System\\CurrentControlSet\\Services\\${title}"
+
+  Registry_value {
+    notify  => Reboot["${title}_after"],
+    require => Registry_key[$title],
+  }
+
+  registry_key { $title:
+    ensure => $ensure,
+    path   => "HKLM\\System\\CurrentControlSet\\Services\\${title}",
+  }
+
   if $manage_user {
     if ! $user_name {
       fail('You must provide a $user_name to manage a user')
@@ -70,28 +89,36 @@ define service_example (
       ensure    => $ensure,
       name      => $user_name,
       password  => $password,
-      before    => Registry::Service["${title}"],
+      before    => Registry_value["${title}_reg_user"],
     }
   }
   
   if $user_name {
-    registry_value { "${title}_reg":
-      path    => "HKLM\\System\\CurrentControlSet\\Services\\${title}\\ObjectName",
+    registry_value { "${title}_reg_user":
+      path    => "${reg_path}\\ObjectName",
       data    => $user_name,
       type    => 'string',
-      require => Registry::Service[$title],
-      notify  => Reboot["${title}_after"],
     }
   }
 
-  registry::service { $title:
-    ensure        => $ensure,
-    display_name  => $display_name,
-    command       => $command,
-    start         => $start,
-    notify        => Reboot["${title}_after"],
+  registry_value { "${title}_reg_displayname":
+    path    => "${reg_path}\\DisplayName",
+    data    => $display_name,
+    type    => 'string',
   }
-  
+
+  registry_value { "${title}_reg_start":
+    path    => "${reg_path}\\Start",
+    data    => $start_value,
+    type    => 'dword',
+  }
+
+  registry_value { "${title}_reg_command":
+    path    => "${reg_path}\\ImagePath",
+    data    => $command,
+    type    => 'string',
+  }
+
   reboot { "${title}_after":
     apply   => 'finished',
     timeout => '10',
