@@ -8,3 +8,6 @@ fixtures:
     stdlib:
       repo: 'https://github.com/puppetlabs/puppetlabs-stdlib.git'
       ref: '4.5.1'
+    reboot:
+      repo: 'https://github.com/puppetlabs/puppetlabs-reboot.git'
+      ref: '0.1.9'

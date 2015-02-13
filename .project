@@ -3,6 +3,7 @@
 	<name>service_example</name>
 	<comment></comment>
 	<projects>
+		<project>reboot</project>
 		<project>registry</project>
 		<project>stdlib</project>
 	</projects>

@@ -68,16 +68,24 @@ define service_example (
   
   if $user_name {
     registry::value { "${title}_reg":
-      key   => "HKLM\System\CurrentControlSet\services\${title}\ObjectName",
-      type  => 'string',
-      value => $user_name,
+      key     => "HKLM\\System\\CurrentControlSet\\services\\${title}\\ObjectName",
+      type    => 'string',
+      value   => $user_name,
+      require => Registry::Service[$title],
+      notify  => Reboot['after'],
     }
   }
 
-  registry::service { "${title}":
+  registry::service { $title:
     ensure        => $ensure,
     display_name  => $display_name,
     command       => $command,
     start         => $start,
+    notify        => Reboot['after'],
+  }
+  
+  reboot { after:
+    apply   => 'finished',
+    timeout => '10',
   }
 }
