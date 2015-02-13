@@ -26,7 +26,7 @@ describe 'service_example' do
     }
 
     it {
-      should contain_registry_value('run_windows_stuff_displayname').with(
+      should contain_registry_value('run_windows_stuff_reg_displayname').with(
         'ensure'  => 'present',
         'path'    => 'HKLM\System\CurrentControlSet\Services\run_windows_stuff\DisplayName',
         'data'		=> 'run_windows_stuff',
@@ -36,7 +36,7 @@ describe 'service_example' do
     }
 
     it {
-      should contain_registry_value('run_windows_stuff_start').with(
+      should contain_registry_value('run_windows_stuff_reg_start').with(
         'ensure'  => 'present',
         'path'    => 'HKLM\System\CurrentControlSet\Services\run_windows_stuff\Start',
         'data'		=> '2',
@@ -46,7 +46,7 @@ describe 'service_example' do
     }
 
     it {
-      should contain_registry_value('run_windows_stuff_command').with(
+      should contain_registry_value('run_windows_stuff_reg_command').with(
         'ensure'  => 'present',
         'path'    => 'HKLM\System\CurrentControlSet\Services\run_windows_stuff\ImagePath',
         'data'		=> 'C:\Windows\regedit.exe',
@@ -108,7 +108,9 @@ describe 'service_example' do
   			'name'					=> 'testUser',
   			'password'			=> '12sdER45^&',
   		).that_comes_before('Registry_key[run_windows_stuff]')
-  	}    it {
+  	}    
+  	
+  	it {
       should contain_registry_key('run_windows_stuff').with(
         'ensure'  => 'present',
         'path'    => 'HKLM\System\CurrentControlSet\Services\run_windows_stuff',
@@ -116,7 +118,7 @@ describe 'service_example' do
     }
 
     it {
-      should contain_registry_value('run_windows_stuff_displayname').with(
+      should contain_registry_value('run_windows_stuff_reg_displayname').with(
         'ensure'  => 'present',
         'path'    => 'HKLM\System\CurrentControlSet\Services\run_windows_stuff\DisplayName',
         'data'		=> 'run_windows_stuff',
@@ -126,9 +128,9 @@ describe 'service_example' do
     }
 
     it {
-      should contain_registry_value('run_windows_stuff_start').with(
+      should contain_registry_value('run_windows_stuff_reg_start').with(
         'ensure'  => 'present',
-        'path'    => 'HKLM\System\CurrentControlSet\Services\run_windows_stuff\',
+        'path'    => 'HKLM\System\CurrentControlSet\Services\run_windows_stuff\Start',
         'data'		=> '2',
         'type'		=> 'dword',
       ).that_requires('Registry_key[run_windows_stuff]')
@@ -136,9 +138,9 @@ describe 'service_example' do
     }
 
     it {
-      should contain_registry_value('run_windows_stuff_command').with(
+      should contain_registry_value('run_windows_stuff_reg_command').with(
         'ensure'  => 'present',
-        'path'    => 'HKLM\System\CurrentControlSet\Services\run_windows_stuff\',
+        'path'    => 'HKLM\System\CurrentControlSet\Services\run_windows_stuff\ImagePath',
         'data'		=> 'C:\Windows\regedit.exe',
         'type'		=> 'string',
       ).that_requires('Registry_key[run_windows_stuff]')
@@ -146,9 +148,9 @@ describe 'service_example' do
     }
 
     it {
-      should contain_registry_value('run_windows_stuff_user').with(
+      should contain_registry_value('run_windows_stuff_reg_user').with(
         'ensure'  => 'present',
-        'path'    => 'HKLM\System\CurrentControlSet\Services\run_windows_stuff\',
+        'path'    => 'HKLM\System\CurrentControlSet\Services\run_windows_stuff\ObjectName',
         'data'		=> 'testUser',
         'type'		=> 'string',
       ).that_requires('Registry_key[run_windows_stuff]')
