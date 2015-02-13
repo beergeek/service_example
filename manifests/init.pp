@@ -77,7 +77,7 @@ define service_example (
   if $user_name {
     registry::value { "${title}_reg":
       key     => "HKLM\\System\\CurrentControlSet\\services\\${title}",
-      data    => $user_name
+      data    => $user_name,
       type    => 'string',
       value   => 'ObjectName',
       require => Registry::Service[$title],

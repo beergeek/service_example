@@ -84,7 +84,7 @@ describe 'service_example' do
   	
   	it {
   		should contain_registry__value('run_windows_stuff_reg').with(
-  			'key'	 	=> "HKLM\\System\\CurrentControlSet\\services\\run_windows_stuff\\ObjectName",
+  			'key'	 	=> "HKLM\\System\\CurrentControlSet\\services\\run_windows_stuff",
   			'data'	=> 'testUser',
   			'type'	=> "string",
   			'value'	=> 'ObjectName',
