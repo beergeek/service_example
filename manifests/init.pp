@@ -21,6 +21,9 @@
 #   Value to determine if a user is managed for the service.
 #   Defaults to false.
 #
+# [*password*]
+#   Password string for user, must be provided if 'mange_user' is true.
+#
 # [*start*]
 #   Value to determine if the service is started.
 #   Valid values: 'automatic', 'manual', and 'disabled'.
@@ -42,6 +45,7 @@ define service_example (
   $ensure       = present,
   $display_name = $title,
   $manage_user  = false,
+  $password     = undef,
   $start        = 'automatic',
   $user_name    = undef,
 ) {
@@ -58,19 +62,24 @@ define service_example (
     if ! $user_name {
       fail('You must provide a $user_name to manage a user')
     }
+    if ! $password {
+      fail('You must provide a $password to manage a user')
+    }
     
     user { "${title}_user":
-      ensure => $ensure,
-      name   => $user_name,
-      before => Registry::Service["${title}"],
+      ensure    => $ensure,
+      name      => $user_name,
+      password  => $password,
+      before    => Registry::Service["${title}"],
     }
   }
   
   if $user_name {
     registry::value { "${title}_reg":
-      key     => "HKLM\\System\\CurrentControlSet\\services\\${title}\\ObjectName",
+      key     => "HKLM\\System\\CurrentControlSet\\services\\${title}",
+      data    => $user_name
       type    => 'string',
-      value   => $user_name,
+      value   => 'ObjectName',
       require => Registry::Service[$title],
       notify  => Reboot['after'],
     }

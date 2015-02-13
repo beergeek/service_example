@@ -69,6 +69,7 @@ describe 'service_example' do
         :display_name => 'run_windows_stuff',
         :command      => 'C:\Windows\regedit.exe',
         :manage_user	=> true,
+        :password			=> '12sdER45^&',
         :user_name		=> 'testUser',
       }
     }
@@ -77,14 +78,16 @@ describe 'service_example' do
   		should contain_user('run_windows_stuff_user').with(
   			'ensure'				=> 'present',
   			'name'					=> 'testUser',
+  			'password'			=> '12sdER45^&',
   		).that_comes_before('Registry::Service[run_windows_stuff]')
   	}
   	
   	it {
   		should contain_registry__value('run_windows_stuff_reg').with(
   			'key'	 	=> "HKLM\\System\\CurrentControlSet\\services\\run_windows_stuff\\ObjectName",
+  			'data'	=> 'testUser',
   			'type'	=> "string",
-  			'value'	=> 'testUser',
+  			'value'	=> 'ObjectName',
   		).that_requires('Registry::Service[run_windows_stuff]')
   		.that_notifies('Reboot[after]')
   	}
