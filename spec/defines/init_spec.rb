@@ -17,15 +17,6 @@ describe 'service_example' do
         :command      => 'C:\Windows\regedit.exe',
       }
     }
-  
-    it {
-      should contain_registry__service('run_windows_stuff').with(
-        'ensure'        => 'present',
-        'display_name'  => 'run_windows_stuff',
-        'command'       => 'C:\Windows\regedit.exe',
-        'start'					=> 'automatic',
-      ).that_notifies('Reboot[run_windows_stuff_after]')
-    }
 
     it {
       should contain_registry_key('run_windows_stuff').with(
@@ -35,15 +26,37 @@ describe 'service_example' do
     }
 
     it {
-      should contain_registry_value('run_windows_stuff').with(
+      should contain_registry_value('run_windows_stuff_displayname').with(
         'ensure'  => 'present',
-        'path'    => 'HKLM\System\CurrentControlSet\Services\run_windows_stuff\',
-        '
-      )
+        'path'    => 'HKLM\System\CurrentControlSet\Services\run_windows_stuff\DisplayName',
+        'data'		=> 'run_windows_stuff',
+        'type'		=> 'string',
+      ).that_requires('Registry_key[run_windows_stuff]')
+      .that_notifies('Reboot[run_windows_stuff_after]')
+    }
+
+    it {
+      should contain_registry_value('run_windows_stuff_start').with(
+        'ensure'  => 'present',
+        'path'    => 'HKLM\System\CurrentControlSet\Services\run_windows_stuff\Start',
+        'data'		=> '2',
+        'type'		=> 'dword',
+      ).that_requires('Registry_key[run_windows_stuff]')
+      .that_notifies('Reboot[run_windows_stuff_after]')
+    }
+
+    it {
+      should contain_registry_value('run_windows_stuff_command').with(
+        'ensure'  => 'present',
+        'path'    => 'HKLM\System\CurrentControlSet\Services\run_windows_stuff\ImagePath',
+        'data'		=> 'C:\Windows\regedit.exe',
+        'type'		=> 'string',
+      ).that_requires('Registry_key[run_windows_stuff]')
+      .that_notifies('Reboot[run_windows_stuff_after]')
     }
     
     it {
-    	should contain_reboot('after').with(
+    	should contain_reboot('run_windows_stuff_after').with(
     		'apply'		=> 'finished',
     		'timeout'	=> '10',
     	)
@@ -94,30 +107,56 @@ describe 'service_example' do
   			'ensure'				=> 'present',
   			'name'					=> 'testUser',
   			'password'			=> '12sdER45^&',
-  		).that_comes_before('Registry::Service[run_windows_stuff]')
-  	}
-  	
-  	it {
-  		should contain_registry_value('run_windows_stuff_reg').with(
-  		  'ensure'	=> 'present',
-  			'path'		=> "HKLM\\System\\CurrentControlSet\\Services\\run_windows_stuff\\ObjectName",
-  			'data'		=> 'testUser',
-  			'type'		=> 'string',
-  		).that_requires('Registry::Service[run_windows_stuff]')
-  		.that_notifies('Reboot[run_windows_stuff_after]')
-  	}
-  
+  		).that_comes_before('Registry_key[run_windows_stuff]')
+  	}    it {
+      should contain_registry_key('run_windows_stuff').with(
+        'ensure'  => 'present',
+        'path'    => 'HKLM\System\CurrentControlSet\Services\run_windows_stuff',
+      )
+    }
+
     it {
-      should contain_registry__service('run_windows_stuff').with(
-        'ensure'        => 'present',
-        'display_name'  => 'run_windows_stuff',
-        'command'       => 'C:\Windows\regedit.exe',
-        'start'					=> 'automatic',
-      ).that_notifies('Reboot[run_windows_stuff_after]')
+      should contain_registry_value('run_windows_stuff_displayname').with(
+        'ensure'  => 'present',
+        'path'    => 'HKLM\System\CurrentControlSet\Services\run_windows_stuff\DisplayName',
+        'data'		=> 'run_windows_stuff',
+        'type'		=> 'string',
+      ).that_requires('Registry_key[run_windows_stuff]')
+      .that_notifies('Reboot[run_windows_stuff_after]')
+    }
+
+    it {
+      should contain_registry_value('run_windows_stuff_start').with(
+        'ensure'  => 'present',
+        'path'    => 'HKLM\System\CurrentControlSet\Services\run_windows_stuff\',
+        'data'		=> '2',
+        'type'		=> 'dword',
+      ).that_requires('Registry_key[run_windows_stuff]')
+      .that_notifies('Reboot[run_windows_stuff_after]')
+    }
+
+    it {
+      should contain_registry_value('run_windows_stuff_command').with(
+        'ensure'  => 'present',
+        'path'    => 'HKLM\System\CurrentControlSet\Services\run_windows_stuff\',
+        'data'		=> 'C:\Windows\regedit.exe',
+        'type'		=> 'string',
+      ).that_requires('Registry_key[run_windows_stuff]')
+      .that_notifies('Reboot[run_windows_stuff_after]')
+    }
+
+    it {
+      should contain_registry_value('run_windows_stuff_user').with(
+        'ensure'  => 'present',
+        'path'    => 'HKLM\System\CurrentControlSet\Services\run_windows_stuff\',
+        'data'		=> 'testUser',
+        'type'		=> 'string',
+      ).that_requires('Registry_key[run_windows_stuff]')
+      .that_notifies('Reboot[run_windows_stuff_after]')
     }
     
     it {
-    	should contain_reboot('after').with(
+    	should contain_reboot('run_windows_stuff_after').with(
     		'apply'		=> 'finished',
     		'timeout'	=> '10',
     	)

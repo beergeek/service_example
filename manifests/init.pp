@@ -89,7 +89,7 @@ define service_example (
       ensure    => $ensure,
       name      => $user_name,
       password  => $password,
-      before    => Registry_value["${title}_reg_user"],
+      before    => Registry_key[title],
     }
   }
   
