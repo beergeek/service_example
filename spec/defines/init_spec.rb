@@ -24,7 +24,7 @@ describe 'service_example' do
         'display_name'  => 'run_windows_stuff',
         'command'       => 'C:\Windows\regedit.exe',
         'start'					=> 'automatic',
-      ).that_notifies('Reboot[after]')
+      ).that_notifies('Reboot[run_windows_stuff_after]')
     }
     
     it {
@@ -83,13 +83,13 @@ describe 'service_example' do
   	}
   	
   	it {
-  		should contain_registry__value('run_windows_stuff_reg').with(
-  			'key'	 	=> "HKLM\\System\\CurrentControlSet\\services\\run_windows_stuff",
-  			'data'	=> 'testUser',
-  			'type'	=> "string",
-  			'value'	=> 'ObjectName',
+  		should contain_registry_value('run_windows_stuff_reg').with(
+  		  'ensure'	=> 'present',
+  			'path'		=> "HKLM\\System\\CurrentControlSet\\Services\\run_windows_stuff\\ObjectName",
+  			'data'		=> 'testUser',
+  			'type'		=> 'string',
   		).that_requires('Registry::Service[run_windows_stuff]')
-  		.that_notifies('Reboot[after]')
+  		.that_notifies('Reboot[run_windows_stuff_after]')
   	}
   
     it {
@@ -98,7 +98,7 @@ describe 'service_example' do
         'display_name'  => 'run_windows_stuff',
         'command'       => 'C:\Windows\regedit.exe',
         'start'					=> 'automatic',
-      ).that_notifies('Reboot[after]')
+      ).that_notifies('Reboot[run_windows_stuff_after]')
     }
     
     it {

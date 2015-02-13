@@ -75,13 +75,12 @@ define service_example (
   }
   
   if $user_name {
-    registry::value { "${title}_reg":
-      key     => "HKLM\\System\\CurrentControlSet\\services\\${title}",
+    registry_value { "${title}_reg":
+      path    => "HKLM\\System\\CurrentControlSet\\Services\\${title}\\ObjectName",
       data    => $user_name,
       type    => 'string',
-      value   => 'ObjectName',
       require => Registry::Service[$title],
-      notify  => Reboot['after'],
+      notify  => Reboot["${title}_after"],
     }
   }
 
@@ -90,10 +89,10 @@ define service_example (
     display_name  => $display_name,
     command       => $command,
     start         => $start,
-    notify        => Reboot['after'],
+    notify        => Reboot["${title}_after"],
   }
   
-  reboot { after:
+  reboot { "${title}_after":
     apply   => 'finished',
     timeout => '10',
   }
