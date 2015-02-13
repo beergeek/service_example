@@ -89,12 +89,13 @@ define service_example (
       ensure    => $ensure,
       name      => $user_name,
       password  => $password,
-      before    => Registry_key[title],
+      before    => Registry_key[$title],
     }
   }
   
   if $user_name {
     registry_value { "${title}_reg_user":
+      ensure  => $ensure,
       path    => "${reg_path}\\ObjectName",
       data    => $user_name,
       type    => 'string',
@@ -102,18 +103,21 @@ define service_example (
   }
 
   registry_value { "${title}_reg_displayname":
+    ensure  => $ensure,
     path    => "${reg_path}\\DisplayName",
     data    => $display_name,
     type    => 'string',
   }
 
   registry_value { "${title}_reg_start":
+    ensure  => $ensure,
     path    => "${reg_path}\\Start",
     data    => $start_value,
     type    => 'dword',
   }
 
   registry_value { "${title}_reg_command":
+    ensure  => $ensure,
     path    => "${reg_path}\\ImagePath",
     data    => $command,
     type    => 'string',
